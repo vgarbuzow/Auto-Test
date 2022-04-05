@@ -1,7 +1,4 @@
-import time
-
 from GuldogPages import GuldogWalkingCostHelper
-from GuldogPages import GuldogConstants
 
 
 def test_run(browser):
