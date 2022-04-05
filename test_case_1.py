@@ -1,17 +1,17 @@
-from selenium.webdriver import Keys, ActionChains
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from GuldogPages import GuldogWalkingCostHelper
+from GuldogPages import GuldogConstants
 
 
-driver = webdriver.Chrome()
-driver.implicitly_wait(10)
-action_chains = ActionChains(driver)
-driver.get('https://guldog.ru/vigul')
-slider = driver.find_element(By.CSS_SELECTOR, 'span.irs-handle.single')
-action_chains.drag_and_drop_by_offset(slider, -2, 21).perform()
-#driver.execute_script("document.querySelector('span.irs-handle.single').style.left = '50%';")
-price = driver.find_element(By.CSS_SELECTOR, 'div.b-calculator-new__summary-value.js-summary-value.js-duplicate-value-content')
-print(price.text)
-#driver.close()
+def test_run(browser):
+    guldog_main_page = GuldogWalkingCostHelper(browser)
+    guldog_main_page.go_to_site()
+    for i in range(4):
+        guldog_main_page.click_on_the_dog_count(i)
+        assert guldog_main_page.get_current_price() == GuldogConstants.GULDOG_PRICE_DOG_COUNT[i]
+    guldog_main_page.click_on_the_switch_walker()
+    assert guldog_main_page.get_current_walker_time() == GuldogConstants.GULDOG_FIRST_WALKER_TIME
+    assert guldog_main_page.get_current_price() == GuldogConstants.GULDOG_FIRST_WALKER_PRICE
+    guldog_main_page.click_on_the_switch_walker()
+    assert guldog_main_page.get_current_price() == GuldogConstants.GULDOG_PRICE_DOG_COUNT[3]
+    assert guldog_main_page.get_current_walker_time() == GuldogConstants.GULDOG_WALKER_TIME
 
-#calc > div > div > div.b-calculator-new__container > div.b-calculator-new__ui-area > div > div.b-calculator-new__range-block > div.b-calculator-new__range-slider > div > div > span > div:nth-child(10)
